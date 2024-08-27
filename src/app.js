@@ -10,7 +10,7 @@ import { dirname } from 'path';
 
 const init = async () => {
   const server = _server({
-    port: 3030,
+    port: 5000,
     host: '0.0.0.0',
     debug: { request: ['error'] }
   });

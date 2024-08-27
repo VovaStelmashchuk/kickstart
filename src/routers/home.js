@@ -1,6 +1,6 @@
 import { Database } from '../database/client.js';
 
-export function getCards(yearSort = -1) {
+export function getYears(yearSort) {
   return Database.collection('f1data')
     .find()
     .sort({ year: yearSort })
@@ -8,24 +8,24 @@ export function getCards(yearSort = -1) {
 }
 
 async function homeHandler(request, h) {
-  const cards = await getCards();
+  const years = await getYears(-1);
 
-  const uiCards = cards.map(card => {
+  const uiYears = years.map(card => {
     return {
       name: card.year
     };
   });
 
   return h.view('home', {
-    sortUrl: '/years',
+    sortUrl: '/years?sort=-1',
     sortButtonTitle: 'From newest to oldest',
-    years: uiCards
+    years: uiYears
   }, { layout: 'layout' });
 }
 
 async function yearHandler(request, h) {
   const yearSortQuery = request.query.sort;
-  const cards = await getCards(yearSortQuery);
+  const cards = await getYears(yearSortQuery);
 
   const uiCards = cards.map(card => {
     return {
@@ -40,9 +40,17 @@ async function yearHandler(request, h) {
     nextSort = '-1';
   }
 
+  let titleSort;
+  if (yearSortQuery === '-1') {
+    titleSort = 'From oldest to newest';
+  }
+  if (yearSortQuery === '1') {
+    titleSort = 'From newest to oldest';
+  }
+
   return h.view('years', {
     sortUrl: `/years?sort=${nextSort}`,
-    sortButtonTitle: 'From newest to oldest',
+    sortButtonTitle: titleSort,
     years: uiCards
   }, { layout: false });
 }
