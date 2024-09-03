@@ -1,6 +1,6 @@
 import { Database } from '../database/client.js';
 
-export function getYears(yearSort) {
+function getYears(yearSort) {
   return Database.collection('f1data')
     .find()
     .sort({ year: yearSort })
@@ -10,10 +10,12 @@ export function getYears(yearSort) {
 async function homeHandler(request, h) {
   const years = await getYears(-1);
 
-  const uiYears = years.map(card => {
-    return {
-      name: card.year
-    };
+  const uiYears = [];
+
+  years.forEach(year => {
+    uiYears.push({
+      name: year.year
+    });
   });
 
   return h.view('home', {
