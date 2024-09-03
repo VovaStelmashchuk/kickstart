@@ -19,7 +19,7 @@ async function yearHandler(request, h) {
   });
 
   return h.view(
-    'races',
+    'races_wrapper',
     {
       races: uiRaces,
     },

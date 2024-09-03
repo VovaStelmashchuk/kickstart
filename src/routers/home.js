@@ -50,7 +50,7 @@ async function yearHandler(request, h) {
     titleSort = 'From newest to oldest';
   }
 
-  return h.view('years', {
+  return h.view('years_wrapper', {
     sortUrl: `/years?sort=${nextSort}`,
     sortButtonTitle: titleSort,
     years: uiCards
