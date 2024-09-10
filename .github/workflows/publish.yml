@@ -6,7 +6,7 @@ on:
       - 'main'
 
 env:
-  DOCKERHUB_REPO: test
+  DOCKERHUB_REPO: kickstart
 
 jobs:
   build_and_push:
