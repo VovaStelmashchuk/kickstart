@@ -4,13 +4,14 @@ import Vision from '@hapi/vision';
 import Handlebars from "handlebars";
 
 import { home } from './routers/home.js';
+import { races } from './routers/races.js';
 
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 
 const init = async () => {
   const server = _server({
-    port: 3000,
+    port: 5000,
     host: '0.0.0.0',
     debug: { request: ['error'] }
   });
@@ -24,13 +25,14 @@ const init = async () => {
   server.views({
     engines: { html: Handlebars },
     relativeTo: __dirname,
-    partialsPath: 'templates/widgets',
-    path: 'templates/widgets',
+    partialsPath: 'views/widgets',
+    path: 'views/widgets',
     layout: true,
-    layoutPath: 'templates/layouts',
+    layoutPath: 'views/layouts',
   });
 
   home(server);
+  races(server);
 
   await server.start();
   console.log('Server running on %s', server.info.uri);

@@ -16,15 +16,12 @@
     "@hapi/hapi": "^21.3.10",
     "@hapi/inert": "^7.1.0",
     "@hapi/vision": "^7.0.3",
-    "bcrypt": "^5.1.1",
     "handlebars": "^4.7.8",
     "htmx": "^0.0.2",
-    "minio": "^8.0.0",
     "mongodb": "6.8",
     "dotenv": "^16.4.5"
   },
   "devDependencies": {
-    "nodemon": "^2.0.7",
-    "tailwindcss": "^3.4.6"
+    "nodemon": "^2.0.7"
   }
 }

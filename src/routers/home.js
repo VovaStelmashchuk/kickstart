@@ -1,23 +1,60 @@
-import { getCards } from "../database/cards-repository.js";
+import { Database } from '../database/client.js';
+
+function getYears(yearSort) {
+  return Database.collection('f1data')
+    .find()
+    .sort({ year: yearSort })
+    .toArray();
+}
 
 async function homeHandler(request, h) {
-  const cards = await getCards();
+  const years = await getYears(-1);
+
+  const uiYears = [];
+
+  years.forEach(year => {
+    uiYears.push({
+      name: year.year
+    });
+  });
+
+  return h.view('home', {
+    sortUrl: '/years?sort=-1',
+    sortButtonTitle: 'From newest to oldest',
+    years: uiYears
+  }, { layout: 'layout' });
+}
+
+async function yearHandler(request, h) {
+  const yearSortQuery = request.query.sort;
+  const cards = await getYears(yearSortQuery);
 
   const uiCards = cards.map(card => {
     return {
-      title: card.title,
-      description: card.count,
+      name: card.year
     };
   });
-  return h.view('home', { cards: uiCards }, { layout: 'layout' });
-}
 
-async function login(request, h) {
-  const { username, password } = request.payload;
-  console.log('login information start');
-  console.log(username, password);
-  console.log('login information end');
-  return h.view('login', {}, { layout: 'layout' });
+  let nextSort;
+  if (yearSortQuery === '-1') {
+    nextSort = '1';
+  } else {
+    nextSort = '-1';
+  }
+
+  let titleSort;
+  if (yearSortQuery === '-1') {
+    titleSort = 'From oldest to newest';
+  }
+  if (yearSortQuery === '1') {
+    titleSort = 'From newest to oldest';
+  }
+
+  return h.view('years_wrapper', {
+    sortUrl: `/years?sort=${nextSort}`,
+    sortButtonTitle: titleSort,
+    years: uiCards
+  }, { layout: false });
 }
 
 export function home(server) {
@@ -25,18 +62,12 @@ export function home(server) {
     method: 'GET',
     path: '/',
     handler: homeHandler,
-    options: {
-      auth: false
-    }
   });
 
   server.route({
-    method: 'POST',
-    path: '/login',
-    handler: login,
-    options: {
-      auth: false
-    }
+    method: 'GET',
+    path: '/years',
+    handler: yearHandler,
   });
 }
 
