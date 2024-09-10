@@ -15,10 +15,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Get short SHA
-        id: sha
-        run: echo "::set-output name=sha::$(git rev-parse --short ${{ github.sha }})"
-
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
 
@@ -34,5 +30,4 @@ jobs:
           context: .
           push: true
           tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DOCKERHUB_REPO }}:${{ steps.sha.outputs.sha }}
             ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DOCKERHUB_REPO }}:latest
