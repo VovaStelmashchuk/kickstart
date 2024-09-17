@@ -5,6 +5,7 @@ import Handlebars from "handlebars";
 
 import { home } from './routers/home.js';
 import { races } from './routers/races.js';
+import { winners } from './routers/winners.js';
 
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
@@ -33,6 +34,7 @@ const init = async () => {
 
   home(server);
   races(server);
+  winners(server); 
 
   await server.start();
   console.log('Server running on %s', server.info.uri);
