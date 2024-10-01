@@ -1,20 +1,26 @@
 import { Database } from '../database/client.js';
 
-function getYear(year, race) {
+function getYear(year) {
   return Database.collection('f1data')
     .findOne({ year: year })
 }
 
 async function winnerHandler(request, h) {
+  const year = request.params.year;
   const race = request.params.race;
 
-  const winners = (await getYear(race)).races.find(r => r.name == race).winner;
+  const yearData = await getYear(year);
+  const raceData = yearData.races.find(r => r.slug === race);
+
+  const winners = raceData.winner;
+
+  console.log("winners ", winners);
 
   const uiWinners = [];
 
   winners.forEach(winner => {
     uiWinners.push({
-      name: race.winner,
+      name: winner,
     });
   });
 
@@ -32,7 +38,7 @@ async function winnerHandler(request, h) {
 export function winners(server) {
   server.route({
     method: 'GET',
-    path: '/winners/{race}',
+    path: '/winners/{year}/{race}',
     handler: winnerHandler,
   });
 }

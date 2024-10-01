@@ -15,6 +15,8 @@ async function yearHandler(request, h) {
   races.forEach(race => {
     uiRaces.push({
       name: race.name,
+      slug: race.slug,
+      year: yearName,
     });
   });
 

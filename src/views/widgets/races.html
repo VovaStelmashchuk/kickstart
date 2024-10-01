@@ -1,6 +1,7 @@
 <div class="grid grid-cols-1 gap-6">
   {{#each races}}
-  <button class="w-full h-16 px-4 bg-transparent border border-black text-black font-semibold rounded-lg shadow-md hover:bg-black hover:text-white transition duration-150 ease-in-out">
+  <button hx-get="/winners/{{year}}/{{slug}}" hx-target="#winners" hx-swap="outerHTML"
+    class="w-full h-16 px-4 bg-transparent border border-black text-black font-semibold rounded-lg shadow-md hover:bg-black hover:text-white transition duration-150 ease-in-out">
     {{name}}
   </button>
   {{/each}}
